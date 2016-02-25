@@ -1,0 +1,30 @@
+tosca_definitions_version: cloudify_dsl_1_2
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+
+node_templates:
+
+  my_host:
+    type: cloudify.nodes.Compute
+    properties:
+      install_agent: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+#        start: abort.js
+#        start: dah.py
+        start: bla.sh
+
+
+  nothing:
+    type: cloudify.nodes.Compute
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start: tests.js
+#        start: dah.py
+#        start: bla.sh
+    properties:
+      install_agent: false
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: my_host
