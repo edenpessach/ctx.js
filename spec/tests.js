@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony-proxies
+#!/usr/bin/env node
 
 var path = require('path');
 process.env.NODE_PATH = process.cwd()+path.delimiter+ process.cwd() + '/node_modules';

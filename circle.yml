@@ -13,11 +13,10 @@ machine:
 dependencies:
   override:
     - npm install
-    - . ./build.sh
 
 test:
   override:
-    - npm test
+    - . ./build.sh
 #
 #deployment:
 #  release:

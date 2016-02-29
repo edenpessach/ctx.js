@@ -18,8 +18,6 @@ node_templates:
     interfaces:
       cloudify.interfaces.lifecycle:
         start: spec/tests.js
-#        start: spec/dah.py
-#        start: spec/bla.sh
     properties:
       install_agent: false
     relationships:
