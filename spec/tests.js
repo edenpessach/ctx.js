@@ -9,25 +9,25 @@ var expect = require('expect.js');
 var ctx = require('ctx');
 
 //logger
-ctx.logger.debug('sdasa _______________________');
-ctx.logger.info('sdasa _______________________');
-ctx.logger.warn('sdasa _______________________');
-ctx.logger.warning('sdasa _______________________');
-ctx.logger.error('sdasa _______________________');
-ctx.logger.fatal('sdasa _______________________');
-ctx.logger.critical('sdasa _______________________');
-
+ctx.logger.debug('_______________________');
+ctx.logger.info('_______________________');
+ctx.logger.warn('_______________________');
+ctx.logger.warning('_______________________');
+ctx.logger.error('_______________________');
+ctx.logger.fatal('_______________________');
+ctx.logger.critical('_______________________');
 
 //node
-expect(ctx.node.id).to.be('nothing');
-expect(ctx.node.name).to.be('nothing');
+expect(ctx.node.id).to.be('tests');
+expect(ctx.node.name).to.be('tests');
 expect(ctx.node.properties).to.eql({"ip":"","install_agent":false,"cloudify_agent":{}});
 expect(ctx.node.type).to.be('cloudify.nodes.Compute');
 expect(ctx.node.type_hierarchy).to.eql(["cloudify.nodes.Root","cloudify.nodes.Compute"]);
 
 //instance
-expect(ctx.instance.id).to.match(/^nothing_.{5}$/);
-//expect(ctx.instance.host_ip).to.be();
+expect(ctx.instance.id).to.match(/^tests_.{5}$/);
+expect(ctx.instance.host_ip).to.be('10.10.1.10');
+//ctx.logger.info(ctx.instance.relationships);
 ctx.instance.runtime_properties.eden = 'heyyyy!!!';
 ctx.instance.update();
 expect(ctx.instance.runtime_properties.eden).to.be('heyyyy!!!');
@@ -37,6 +37,9 @@ expect(ctx.operation.name).to.be('cloudify.interfaces.lifecycle.start');
 expect(ctx.operation.retry_number).to.be(0);
 expect(ctx.operation.max_retries).to.be(0);
 //ctx.operation.retry('AGAIN!', 2);
+
+//capabilities
+expect(JSON.stringify(ctx.capabilities.get_all)).to.match(/^{"my_host_.{5}":{"ip":"10.10.1.10"}}$/);
 
 //blueprint
 expect(ctx.blueprint.id).to.be('local');
@@ -56,21 +59,14 @@ expect(ctx.task_queue).to.be(null);
 expect(ctx.plugin).to.be('script');
 expect(ctx.provider_context).to.eql({});
 //ctx.logger.info(ctx.bootstrap_context);
+//ctx.logger.info(ctx.target);
+//ctx.logger.info(ctx.source);
 
-//context functions  TODO
-expect(ctx.get_resource('resource.txt')).to.be("I'm a resource. version: {{version}}");
-expect(ctx.get_resource_and_render('resource.txt', {version:'1.4'})).to.be("I'm a resource. version: 1.4");
-var newResourceName = 'resource'+Date.now()+'.txt';
-ctx.download_resource('resource.txt', newResourceName);
+//context functions
+expect(ctx.get_resource('spec/resource.txt')).to.be("I'm a resource. version: {{version}}");
+expect(ctx.get_resource_and_render('spec/resource.txt', {version:'1.4'})).to.be("I'm a resource. version: 1.4");
+var newResourceName = 'spec/resource'+Date.now()+'.txt';
+ctx.download_resource('spec/resource.txt', newResourceName);
 var stats = fs.statSync(newResourceName);
 expect(stats.isFile()).to.be(true);
 fs.unlinkSync(newResourceName);
-
-//process.on('uncaughtException',function(){
-//    ctx.logger.info('exited');
-//});
-//ctx.abort_operation('DIE!');
-//ctx.logger.info('after abort');
-
-//ctx.retry_operation('Live Again!', 0);
-

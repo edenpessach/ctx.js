@@ -5,10 +5,4 @@ require('module').Module._initPaths();
 
 var ctx = require('ctx');
 
-//process.on('uncaughtException',function(){
-//    ctx.logger.info('exited');
-//});
-ctx.abort_operation('DIE!');
-//ctx.logger.info('after abort');
-
-//ctx.retry_operation('Live Again!', 0);
+ctx.instance.runtime_properties.ip = '10.10.1.10';

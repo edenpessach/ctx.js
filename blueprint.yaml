@@ -1,4 +1,4 @@
-tosca_definitions_version: cloudify_dsl_1_2
+tosca_definitions_version: cloudify_dsl_1_1
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
@@ -11,20 +11,30 @@ node_templates:
       install_agent: false
     interfaces:
       cloudify.interfaces.lifecycle:
-#        start: abort.js
-#        start: dah.py
-        start: bla.sh
+        start: spec/setHostIp.js
 
-
-  nothing:
+  tests:
     type: cloudify.nodes.Compute
     interfaces:
       cloudify.interfaces.lifecycle:
-        start: tests.js
-#        start: dah.py
-#        start: bla.sh
+        start: spec/tests.js
+#        start: spec/dah.py
+#        start: spec/bla.sh
     properties:
       install_agent: false
     relationships:
       - type: cloudify.relationships.contained_in
         target: my_host
+
+  retryAbort:
+    type: cloudify.nodes.Compute
+    properties:
+      install_agent: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          implementation: spec/retryAbort.js
+          max_retries: 1
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: tests

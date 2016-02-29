@@ -1,7 +1,8 @@
 set -e
-ctx logger info $(ctx instance runtime_properties eden)
+ctx logger info "source"
+ctx logger info $(ctx target instance id)
 
-q
+
 # ctx logger error "$(ctx -j get_resource guy.js)"
 #TODO
 #ctx logger error "$(ctx -j get_resource_and_render guy.js '@{\"version\": \"2\"}')"

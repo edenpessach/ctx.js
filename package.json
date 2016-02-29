@@ -1,0 +1,26 @@
+{
+  "name": "ctx.js",
+  "version": "1.0.0",
+  "description": "Exposing Cloudify context to a javascript api",
+  "main": "ctx.js",
+  "dependencies": {
+    "expect.js": "^0.3.1"
+  },
+  "scripts": {
+    "temp": "export name=eden",
+    "build": "virtualenv cloudify-cli && . ./source cloudify-cli/bin/activate && . ./nvm use && . ./pip install https://github.com/cloudify-cosmo/cloudify-cli/archive/master.zip -r https://raw.githubusercontent.com/cloudify-cosmo/cloudify-cli/master/dev-requirements.txt",
+    "test": "cfy local init -p blueprint.yaml && cfy local execute -w install | tee /dev/stderr | grep \"Success: aborting operation\" -q"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edenpessach/ctx.js.git"
+  },
+  "author": "edenpessach",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edenpessach/ctx.js/issues"
+  },
+  "homepage": "https://github.com/edenpessach/ctx.js#readme"
+}
+
+
