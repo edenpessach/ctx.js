@@ -23,6 +23,9 @@ node_templates:
     relationships:
       - type: cloudify.relationships.contained_in
         target: my_host
+        source_interfaces:
+          cloudify.interfaces.relationship_lifecycle:
+            establish: spec/relationships.js
 
   retryAbort:
     type: cloudify.nodes.Compute

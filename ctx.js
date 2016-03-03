@@ -59,13 +59,12 @@ class NodeContext {
     }
 }
 
-//TODO this[base] is not private allthroughout the code.
 class InstanceContext {
-    constructor(){
+    constructor(basePrefix){
         var self = this;
-        this[base] = 'instance';
-        //TODO 'relationships' don't work currently.
-        defineGetters(this, this[base], ['id', 'host_ip', 'relationships'], {});
+        this[base] = basePrefix ? basePrefix+' '+'instance' : 'instance';
+        //'relationships' returns a python object and is not supported by bash
+        defineGetters(this, this[base], ['id', 'host_ip'], {});
 
         this.runtime_properties = Proxy.create({
             //TODO undefined properties return {}
@@ -148,6 +147,16 @@ var retry_operation = function(message, retry_after){
     exec('retry_operation', false, {message: message, retry_after: retry_after});
 };
 
+//relationships
+var target = {
+    instance: new InstanceContext('target')
+};
+
+var source = {
+    instance: new InstanceContext('source')
+};
+
+
 
 module.exports = {
     logger: new Logger(),
@@ -162,9 +171,10 @@ module.exports = {
     get_resource: get_resource,
     get_resource_and_render: get_resource_and_render,
     abort_operation: abort_operation,
-    retry_operation: retry_operation
+    retry_operation: retry_operation,
+    target: target,
+    source: source
 };
-//TODO not working currenlty - 'source' , 'target'
-var contextProperties = ['host_ip', 'type', 'execution_id', 'workflow_id', 'task_id', 'task_name', 'task_target', 'task_queue', 'plugin', 'provider_context', 'bootstrap_context', 'source', 'target'];
+var contextProperties = ['host_ip', 'type', 'execution_id', 'workflow_id', 'task_id', 'task_name', 'task_target', 'task_queue', 'plugin', 'provider_context', 'bootstrap_context'];
 defineGetters(module.exports, null, contextProperties);
 
